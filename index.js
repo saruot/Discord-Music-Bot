@@ -2,8 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { Player } = require('discord-player');
-const {token, clientId, guildId} = require('./config.json')
+const { token } = require('./config.json');
 const { AttachmentExtractor, SoundCloudExtractor } = require('@discord-player/extractor');
+
 
 const client = new Client({
     intents: [
@@ -25,8 +26,11 @@ for (const file of commandFiles) {
 const player = new Player(client);
 
 (async () => {
+    const { YoutubeiExtractor } = await import('discord-player-youtubei');
+
+    await player.extractors.register(SoundCloudExtractor);
     await player.extractors.register(AttachmentExtractor, {});
-    await player.extractors.register(SoundCloudExtractor, {});
+    await player.extractors.register(YoutubeiExtractor, {})
     console.log("🎵 Extractors registered successfully!");
 })();
 // Handle interactions
